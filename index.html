@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>Portfolio</title>
+  <link rel="stylesheet" href="css/master.css">
+  <!-- normalize -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+  <!-- normalize -->
+  <!-- fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200&display=swap" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+</head>
+
+<body>
+  <div class="navbar">
+    <ul>
+      <li><button id="home">Home</button></li>
+      <a href="javascript:void(0)" id="contact">contact</a>
+      <li><button id="work">Work</button></li>
+    </ul>
+  </div>
+  <div class="circles-contrainer">
+    <img class="big-circle" src="img/big-c.svg" alt="circle">
+
+    <div class="circle">
+    </div>
+
+    <img class="small-circle-1" src="img/small-c.svg" alt="">
+    <img class="small-circle-2" src="img/small-c.svg" alt="">
+    <img class="small-circle-3" src="img/small-c.svg" alt="">
+    <img class="small-circle-4" src="img/small-c.svg" alt="">
+
+    <img src="img/orbit.svg" alt="">
+
+    <!-- contact? -->
+
+<div class="contact-panel">
+  Block with works
+</div>
+
+    <div class="text">
+      <h1>Hello.</h1>
+      <h3>My name is Evgeniy</h3>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex </p>
+    </div>
+  </div>
+
+<!-- move all -->
+<script type="text/javascript">
+  $(function() {
+$('#contact').on('click', function() {
+  $('body').addClass('show-contact-panel');
+});
+
+// ADD YOUR OWN CLOSE LOGIC
+$('.circles-contrainer').on('click', function() {
+  $('body').removeClass('show-contact-panel');
+});
+});
+</script>
+<!-- move all -->
+
+</body>
+
+</html>
