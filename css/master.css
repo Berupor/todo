@@ -1,10 +1,18 @@
+* {
+  --bs-gutter-x: 0;
+}
+
 html, body {
   width: 100%;
   height: 100%;
-  background-color: #0F0E0E;
-  /* overflow-x: hidden;
-  position: relative; */
+  background-color: #0F0E0E !important;
+  /* overflow-x: hidden; */
+  position: relative;
   transition: 0.3s all;
+}
+
+html {
+  overflow-x: hidden;
 }
 
 /* CIRCLES */
@@ -17,6 +25,11 @@ html, body {
   right: 0;
   margin: 0 auto;
   top: calc(50% - 214px)
+}
+
+.big-circle:hover {
+  transform: scale(1.1);
+  transition: 1s;
 }
 
 .circle {
@@ -69,23 +82,18 @@ html, body {
   bottom: 200px;
 }
 
-.circles-contrainer {
+.circles {
   display: flex;
   justify-content: center;
   align-items: center;
   /* border: 1px solid white; */
-  max-width: 1000px;
-  height: 1000px;
+  max-width: 100rem;
+  height: 100rem;
   position: absolute;
   top: calc(50% - 500px);
   left: 0;
   right: 0;
   margin: 0 auto;
-}
-
-.big-circle:hover {
-  transform: scale(1.1);
-  transition: 1s;
 }
 
 /* welcome message */
@@ -112,16 +120,17 @@ html, body {
 }
 
 /* NAVBAR */
-.navbar {
+#navbar {
+  transition: all 1s;
   font-size: 20px;
   position: absolute;
   top: calc(50% - 50px);
-  right: -130px;
+  right: -500px;
   margin: 0 auto;
   z-index: +1
 }
 
-.navbar ul {
+#navbar ul {
   /* border: 1px solid red; */
   font-size: 25px;
   font-family: 'Inter', sans-serif;
@@ -132,7 +141,7 @@ html, body {
   width: 500px;
 }
 
-.navbar button {
+#navbar button {
   text-decoration: none;
   padding: 0;
   border: none;
@@ -145,23 +154,64 @@ html, body {
 }
 
 /* Change the link color on hover */
-.navbar button:hover {
+#navbar button:hover {
   transition: 0.5s;
   transform: scale(1.1);
   color: white;
 }
 
 /* test? */
-
-.contact-panel {
-  height: 800px;
-  width: 500px;
-  background: #f00;
+#contact-panel {
+  font-size: 40px;
+  transition: all 1s;
+  height: 2000px;
+  width: 1500px;
   position: absolute;
-  right: 0;
+  right: -1400px;
   top: 0;
-  transform: translateX(900px);
+  transform: translateX(1900px);
 }
+
 body.show-contact-panel {
   transform: translateX(-50%);
 }
+
+#contact {
+  z-index: +33
+}
+
+/* project side */
+.project {
+  overflow: hidden;
+}
+
+.text-project {
+  font-family: 'Inter', sans-serif;
+  color: white;
+}
+
+.text-project h1 {
+  margin-top: 30px;
+  font-size: 130px;
+  margin-left: 30px;
+  font-family: sans-serif;
+}
+
+.text-project a {
+  font-size: 14px;
+  margin-left: 30px;
+  text-decoration: none;
+}
+
+.text-project p {
+  font-size: 16px;
+  margin-left: 30px;
+}
+
+.project-image {
+  width: 770px;
+  height: 430px;
+  object-fit: cover;
+}
+
+/* project side */
