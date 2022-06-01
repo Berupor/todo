@@ -12,7 +12,7 @@ html, body {
 }
 
 html {
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
 }
 
 /* CIRCLES */
@@ -61,7 +61,7 @@ html {
 .small-circle-1 {
   position: absolute;
   right: 70px;
-  top: 200px;
+  top: 150px;
 }
 
 .small-circle-2 {
@@ -72,7 +72,7 @@ html {
 
 .small-circle-3 {
   position: absolute;
-  left: 70px;
+  left: 40px;
   bottom: 200px;
 }
 
@@ -224,16 +224,16 @@ body.show-contact-panel {
     top: calc(50% - 314px)
   }
   .orbit {
-    width: 951px;
-    height: 951px;
+    width: 851px;
+    height: 851px;
   }
   @keyframes circle {
     0% {
-      transform: rotate(0deg) translate(-475px) rotate(0deg);
+      transform: rotate(0deg) translate(-425px) rotate(0deg);
     }
 
     100% {
-      transform: rotate(360deg) translate(-475px) rotate(-360deg);
+      transform: rotate(360deg) translate(-425px) rotate(-360deg);
     }
   }
   .text {
@@ -241,4 +241,22 @@ body.show-contact-panel {
     width: 400px;
     left: calc(50% - 200px)
   }
+  #contact-panel {
+    font-size: 40px;
+    height: 1000px;
+    width: 750px;
+    right: 2000px;
+    top: 150%;
+
+  }
+  .circles {
+    max-width: 100%;
+    /* top: calc(50% - 500px); */
+    left: 0;
+    right: 0;
+  }
+ #navbar {
+   right: calc(50% - 450px);
+   z-index: -1
+ }
 }
