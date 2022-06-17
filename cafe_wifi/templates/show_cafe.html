@@ -1,0 +1,132 @@
+{% include "header.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+
+<!-- Page Header -->
+<header class="masthead" style="background-image: url('{{cafe.img_url}}')">
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <div class="post-heading">
+          <h1>{{cafe.name}}</h1>
+          <span class="meta">Added by
+            <a href="#">{{cafe.author.name}}</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<body>
+  <div class="container cafe-info">
+    <div class="row align-items-start">
+      <div class="col col-left">
+
+        {% if cafe.has_sockets %}
+        <p class="text-success">Sockets: Yes <i class="fa-solid fa-plug"></i></p>
+        {% else: %}
+        <p class="text-danger">Sockets: No <i class="fa-solid fa-plug-circle-xmark"></i></p>
+        {% endif %}
+      </div>
+      <div class="col col-average">
+
+        {% if cafe.has_toilet %}
+        <p class="text-success">Toilet: Yes <i class="fa-solid fa-toilet-paper"></i></p>
+        {% else: %}
+        <p class="text-danger">Toilet: No <i class="fa-solid fa-toilet-paper-slash"></i></p>
+        {% endif %}
+      </div>
+      <div class="col col-average">
+
+        {% if cafe.has_wifi %}
+        <p class="text-success">Wifi: Yes <i class="fa-solid fa-wifi"></i></p>
+        {% else: %}
+        <p class="text-danger">Wifi: No <i class="fa-solid fa-ban"></i></p>
+        {% endif %}
+      </div>
+      <div class="col col-right">
+
+        {% if cafe.can_take_calls %}
+        <p class="text-success">Calls: Yes <i class="fa-solid fa-phone"></i></p>
+        {% else: %}
+        <p class="text-danger">Calls: No <i class="fa-solid fa-phone-slash"></i></p>
+        {% endif %}
+      </div>
+    </div>
+    <div class="row align-items-center">
+      <div class="col col-left ">
+        Seats: <i>{{ cafe.seats }}</i>
+      </div>
+      <div class="col col-average main-info">
+        <h5>Assessment: ⭐ {{ assessment }}</h5>
+      </div>
+      <div class="col col-right">
+        Price: <i>{{ cafe.coffee_price }}</i>
+      </div>
+    </div>
+    <div class="row align-items-end">
+      <div class="col col-left">
+        <a class="map-link" href={{ cafe.map_url }}> Google maps <i class="fa-solid fa-location-dot"></i></a>
+      </div>
+      <div class="col col-right">
+         Empty
+      </div>
+
+    </div>
+  </div>
+
+  <hr>
+
+<article>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+
+
+
+        {% if logged_in %}
+        <!--           Comments Area -->
+        {#				#Load the CKEditor#}
+        {{ ckeditor.load() }}
+        {#          #Configure it with the name of the form field from CommentForm#}
+        {{ ckeditor.config(name='assessment_text') }}
+        {#          #Create the wtf quickform from CommentForm#}
+        {{ wtf.quick_form(comment_form, novalidate=True, button_map={"submit": "primary"}) }}
+					  {% endif %}
+
+        <div class="col-lg-12 col-md-10 mx-auto comment">
+          {% for review in reviews %}
+          <ul class="commentList">
+            <li>
+              <div class="commenterImage">
+                <img src="{{ review.review_author.email | gravatar }}" />
+              </div>
+              <div class="commentText">
+                {{ review.text|safe }}
+                <span class="date sub-text">{{ review.review_author.name }}</span>
+
+
+              </div>
+            </li>
+          </ul>
+          {% endfor %}
+
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</article>
+
+<hr>
+
+
+
+</body>
+
+
+
+<!-- Post Content -->
