@@ -91,6 +91,7 @@ class Reviews(db.Model):
 
 
 def average_assessment(index):
+    """Arithmetical mean of rating"""
     assessments = Assessment.query.filter_by(cafe_id=index)
     sum_assessments = 0
     len_assessments = (len(list(assessments)))
@@ -126,47 +127,58 @@ def home():
 def show_cafe(index):
     comment_form = CommentForm()
     requested_post = Cafe.query.get(index)
-    assessment = Assessment.query.filter_by(author_id=current_user.id, cafe_id=index).first()
-    if comment_form.validate_on_submit():
-        if not current_user.is_authenticated:
-            flash('You need to login or register to comment.')
-            return redirect(url_for('login'))
-        else:
-            new_review = Reviews(
-                review_author=current_user,
-                parent_cafe=requested_post,
-                text=comment_form.text.data,
-            )
-            db.session.add(new_review)
-            db.session.commit()
-            return redirect(url_for('show_cafe', index=index))
+    try:
+        # Checking if the user has rated
+        assessment = Assessment.query.filter_by(author_id=current_user.id, cafe_id=index).first()
+    # If user not logged in
+    except AttributeError:
+        return render_template('show_cafe.html',
+                               cafe=requested_post,
+                               logged_in=current_user.is_authenticated,
+                               comment_form=comment_form,
+                               user_rating=None,
+                               assessment=average_assessment(index),
+                               reviews=Reviews.query.filter_by(cafe_id=index).all(),
+                               )
+    else:
+        if comment_form.validate_on_submit():
+            if not current_user.is_authenticated:
+                flash('You need to login or register to comment.')
+                return redirect(url_for('login'))
+            else:
+                new_review = Reviews(
+                    review_author=current_user,
+                    parent_cafe=requested_post,
+                    text=comment_form.text.data,
+                )
+                db.session.add(new_review)
+                db.session.commit()
+                return redirect(url_for('show_cafe', index=index))
+        # If user rated cafe
+        elif request.method == 'POST':
+            if assessment:
+                # Update user rating
+                assessment.assessment = request.form['rating']
+                db.session.commit()
+                return redirect(url_for('show_cafe', index=index))
+            else:
+                new_assessment = Assessment(
+                    assessment_author=current_user,
+                    assessment=request.form['rating'],
+                    parent_cafe=requested_post,
+                )
+                db.session.add(new_assessment)
+                db.session.commit()
+                return redirect(url_for('show_cafe', index=index))
 
-    elif request.method == 'POST':
-        if assessment:
-            assessment = Assessment.query.filter_by(author_id=current_user.id, cafe_id=index).first()
-            assessment.assessment = request.form['rating']
-            db.session.commit()
-
-            return redirect(url_for('show_cafe', index=index))
-
-        else:
-            new_assessment = Assessment(
-                assessment_author=current_user,
-                assessment=request.form['rating'],
-                parent_cafe=requested_post,
-            )
-            db.session.add(new_assessment)
-            db.session.commit()
-            return redirect(url_for('show_cafe', index=index))
-
-    return render_template('show_cafe.html',
-                           cafe=requested_post,
-                           logged_in=current_user.is_authenticated,
-                           comment_form=comment_form,
-                           user_rating=assessment,
-                           assessment=average_assessment(index),
-                           reviews=Reviews.query.filter_by(cafe_id=index).all(),
-                           )
+        return render_template('show_cafe.html',
+                               cafe=requested_post,
+                               logged_in=current_user.is_authenticated,
+                               comment_form=comment_form,
+                               user_rating=assessment,
+                               assessment=average_assessment(index),
+                               reviews=Reviews.query.filter_by(cafe_id=index).all(),
+                               )
 
 
 @app.route('/new-cafe', methods=['GET', 'POST'])
