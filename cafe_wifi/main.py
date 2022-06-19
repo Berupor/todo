@@ -1,31 +1,26 @@
 from flask import Flask, render_template, redirect, url_for, flash
 from flask_bootstrap import Bootstrap
 from flask_ckeditor import CKEditor
-from datetime import date
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import func, MetaData
-from sqlalchemy import Table, Column, Integer, ForeignKey
 from sqlalchemy.orm import relationship
-from flask import abort
+from flask import abort, request
 from sqlalchemy.ext.declarative import declarative_base
-from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
+from flask_login import UserMixin, login_user, LoginManager, current_user, logout_user
 from flask_gravatar import Gravatar
 from functools import wraps
-from forms import CreateCafeForm, LoginForm, RegisterForm, CommentForm, AssessmentForm
-
+from forms import CreateCafeForm, LoginForm, RegisterForm, CommentForm
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
-ckeditor = CKEditor(app)
-Bootstrap(app)
-
-Base = declarative_base()
-
-##CONNECT TO DB
+# CONNECT TO DB
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///cafes.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+
+ckeditor = CKEditor(app)
+Bootstrap(app)
+Base = declarative_base()
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -39,7 +34,8 @@ gravatar = Gravatar(app,
                     use_ssl=False,
                     base_url=None)
 
-##CONFIGURE TABLE
+
+# CONFIGURE TABLE
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
@@ -100,11 +96,7 @@ def average_assessment(index):
     len_assessments = (len(list(assessments)))
     for assessment in assessments:
         sum_assessments += assessment.assessment
-    try:
         return round(sum_assessments / len_assessments, 1)
-    except:
-        return 0
-
 
 
 @login_manager.user_loader
@@ -112,14 +104,14 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
-#Create admin-only decorator
+# Create admin-only decorator
 def admin_only(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        #If id is not 1 then return abort with 403 error
+        # If id is not 1 then return abort with 403 error
         if current_user.id != 1:
             return abort(403)
-        #Otherwise continue with the route function
+        # Otherwise continue with the route function
         return f(*args, **kwargs)
     return decorated_function
 
@@ -133,23 +125,13 @@ def home():
 @app.route('/post/<int:index>', methods=['GET', 'POST'])
 def show_cafe(index):
     comment_form = CommentForm()
-    assessment_form = AssessmentForm()
     requested_post = Cafe.query.get(index)
-    # print(Assessment.query.filter_by(author_id=current_user.id, cafe_id=index).first())
-
+    assessment = Assessment.query.filter_by(author_id=current_user.id, cafe_id=index).first()
     if comment_form.validate_on_submit():
         if not current_user.is_authenticated:
             flash('You need to login or register to comment.')
             return redirect(url_for('login'))
-
-        if Assessment.query.filter_by(author_id=current_user.id, cafe_id=index).first():
-            flash('You are already add review!')
         else:
-            # new_assessment = Assessment(
-            #     assessment_author=current_user,
-            #     assessment=len(comment_form.assessment.data),
-            #     parent_cafe=requested_post,
-            # )
             new_review = Reviews(
                 review_author=current_user,
                 parent_cafe=requested_post,
@@ -159,14 +141,31 @@ def show_cafe(index):
             db.session.commit()
             return redirect(url_for('show_cafe', index=index))
 
+    elif request.method == 'POST':
+        if assessment:
+            assessment = Assessment.query.filter_by(author_id=current_user.id, cafe_id=index).first()
+            assessment.assessment = request.form['rating']
+            db.session.commit()
+
+            return redirect(url_for('show_cafe', index=index))
+
+        else:
+            new_assessment = Assessment(
+                assessment_author=current_user,
+                assessment=request.form['rating'],
+                parent_cafe=requested_post,
+            )
+            db.session.add(new_assessment)
+            db.session.commit()
+            return redirect(url_for('show_cafe', index=index))
+
     return render_template('show_cafe.html',
                            cafe=requested_post,
                            logged_in=current_user.is_authenticated,
                            comment_form=comment_form,
+                           user_rating=assessment,
                            assessment=average_assessment(index),
                            reviews=Reviews.query.filter_by(cafe_id=index).all(),
-                           assessment_form=assessment_form
-
                            )
 
 
@@ -225,6 +224,7 @@ def register():
         return redirect(url_for('home'))
     return render_template('register.html', form=form, logged_in=current_user.is_authenticated)
 
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -252,9 +252,5 @@ def logout():
     return redirect(url_for('home'))
 
 
-
-
-
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
-

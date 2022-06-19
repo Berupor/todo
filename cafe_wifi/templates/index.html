@@ -1,26 +1,16 @@
-
 {% include "header.html" %}
 
 
 <div class="row cafe-container ">
   <h1>Cafe and Wifi</h1>
   {% for cafe in cafe_db %}
-
-
   <a href={{ url_for('show_cafe', index=cafe.id) }}><img class="image left" src={{ cafe.img_url }} alt="Image">
     <section class="content">
       <h2>{{ cafe.name }}</h2>
-
   </a>
-
-  <a href={{ cafe.map_url}}><i class="fa-solid fa-location-dot"></i> {{ cafe.location }}</a>
-  <p><i class="fa-solid fa-mug-saucer"></i> {{ cafe.coffee_price }}</p>
-
-  <hr>
-
-  </section>
-
+      <a href={{ cafe.map_url}}><i class="fa-solid fa-location-dot"></i> {{ cafe.location }}</a>
+      <p><i class="fa-solid fa-mug-saucer"></i> {{ cafe.coffee_price }}</p>
+      <hr>
+    </section>
   {% endfor %}
 </div>
-
-

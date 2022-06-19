@@ -10,17 +10,17 @@
       <div class="col-lg-8 col-md-10 mx-auto">
         <div class="post-heading">
           <h1>Register</h1>
-          <span class="subheading">Start Contributing to the Blog!</span>
         </div>
       </div>
     </div>
   </div>
 </header>
+
 {% with messages = get_flashed_messages() %}
 {% if messages %}
 <ul class=flashes>
   {% for message in messages %}
-  <p>{{ message }}</p>
+  {{ message }}
   {% endfor %}
 </ul>
 {% endif %}
@@ -28,9 +28,7 @@
 <div class="container">
   <div class="row">
     <div class="col-lg-8 col-md-10 mx-auto">
-
       {{ wtf.quick_form(form, novalidate=True, button_map={"submit": "primary"}) }}
-
     </div>
   </div>
 </div>

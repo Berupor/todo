@@ -8,6 +8,12 @@ html, body {
   background-color: #FEF5ED;
 }
 
+
+.info-i {
+  padding: 0 3px;
+  font-size: 34px;
+}
+
 .navbar {
   position: sticky;
   top: 1px;
@@ -79,8 +85,7 @@ html, body {
 header.masthead {
   text-align: center;
   margin-bottom: 80px;
-  background: no-repeat center center;
-  background-color: #868e96;
+  background: #868e96 no-repeat center center;
   position: relative;
   background-size: cover;
 }
@@ -143,6 +148,21 @@ header.masthead .post-heading .subheading {
   margin: 0;
 }
 
+.col-map {
+  height: 208px;
+  text-align: center;
+}
+
+.map-link {
+  text-decoration-line: none;
+  font-size: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+}
+
+
 .cafe-assessment .col {
   text-align: center;
   transition: 0.9s;
@@ -152,15 +172,38 @@ header.masthead .post-heading .subheading {
   border-radius: 20px;
 }
 
+@media (max-width: 767px) {
+  .col-seats {
+    min-height: 249px;
+  }
+  .col-rating h5{
+  font-size: 20px;
+}
+
+
+}
+
+.col-rating {
+  text-align: center;
+  max-height: 271px;
+}
+
+.col-coffee {
+  max-height: 181px;
+}
+
+
 .cafe-info .col:hover {
   transition: 0.9s;
   transform: scale(0.9);
+}
+.col-top {
+  min-height: 170px;
 }
 
 .col-left {
   background: rgb(198, 220, 228);
   background: linear-gradient(90deg, rgba(198, 220, 228, 1) 0%, rgba(211, 235, 205, 1) 100%);
-
 }
 
 .col-average {
@@ -172,13 +215,6 @@ header.masthead .post-heading .subheading {
   background: linear-gradient(90deg, rgba(211, 235, 205, 1) 0%, rgba(198, 220, 228, 1) 100%);
 }
 
-.map-link {
-  text-decoration-line: none;
-}
-
-.main-info {
-
-}
 
 /* footer */
 .site-footer {
@@ -318,8 +354,8 @@ header.masthead .post-heading .subheading {
     font-weight: 600
   }
 }
-/* footer */
 
+/* footer */
 /*form*/
 .form-group {
   color: #1E5128
@@ -346,46 +382,127 @@ header.masthead .post-heading .subheading {
 .flashes p {
   color: red;
 }
+
 .flashes {
   padding: 0;
 }
 
 /*comment*/
 .comment {
-    padding-top: 20px;
+  padding-top: 20px;
 }
-
-
 
 .commentList {
-    padding:0;
-    list-style:none;
-    max-height:200px;
-    overflow:auto;
+  padding: 0;
+  list-style: none;
+  max-height: 200px;
+  overflow: auto;
 }
+
 .commentList li {
-    margin:0;
-    margin-top:10px;
+  margin: 10px 0 0;
 }
-.commentList li > div {
-    display:table-cell;
+
+.commentList li>div {
+  display: table-cell;
 }
+
 .commenterImage {
-    width:30px;
-    margin-right:5px;
-    height:100%;
-    float:left;
+  width: 30px;
+  margin-right: 5px;
+  height: 100%;
+  float: left;
 }
+
 .commenterImage img {
-    width:100%;
-    border-radius:50%;
+  width: 100%;
+  border-radius: 50%;
 }
+
 .commentText p {
-    margin:0;
+  margin: 0;
 }
+
 .sub-text {
-    color:#aaa;
-    font-size:11px;
+  color: #aaa;
+  font-size: 11px;
 }
 
 /*comment*/
+/*star rating*/
+.star-cb-group {
+  /* remove inline-block whitespace */
+  font-size: 0;
+  /* flip the order so we can use the + and ~ combinators */
+  unicode-bidi: bidi-override;
+  direction: rtl;
+  /* the hidden clearer */
+}
+
+.star-cb-group * {
+  font-size: 2rem;
+}
+
+.star-cb-group>input {
+  display: none;
+}
+
+.star-cb-group>input+label {
+  /* only enough room for the star */
+  display: inline-block;
+  overflow: hidden;
+  text-indent: 9999px;
+  width: 1em;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.star-cb-group>input+label:before {
+  display: inline-block;
+  text-indent: -9999px;
+  content: '\2606';
+  color: #888;
+}
+
+.star-cb-group>input:checked~label:before, .star-cb-group>input+label:hover~label:before, .star-cb-group>input+label:hover:before {
+  content: '\2605';
+  color: #e52;
+  text-shadow: 0 0 1px #333;
+}
+
+.star-cb-group>.star-cb-clear+label {
+  text-indent: -9999px;
+  width: 0.5em;
+  margin-left: -0.5em;
+}
+
+.star-cb-group>.star-cb-clear+label:before {
+  width: 0.5em;
+}
+
+.star-cb-group:hover>input+label:before {
+  content: '\2606';
+  color: #888;
+  text-shadow: none;
+}
+
+.star-cb-group:hover>input+label:hover~label:before, .star-cb-group:hover>input+label:hover:before {
+  content: '\2605';
+  color: #e52;
+  text-shadow: 0 0 1px #333;
+}
+
+fieldset {
+  border: 0;
+  width: 10em;
+  border-radius: 1px;
+  margin: 1em auto;
+}
+
+#log {
+  margin: 1em auto;
+  width: 5em;
+  text-align: center;
+  background: transparent;
+}
+

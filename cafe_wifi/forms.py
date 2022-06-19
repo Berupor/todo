@@ -1,12 +1,10 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, PasswordField, SelectField, BooleanField, IntegerField, TextAreaField
-from wtforms.validators import DataRequired, URL
+from wtforms import StringField, SubmitField, PasswordField, BooleanField
+from wtforms.validators import DataRequired, URL, Email
 from flask_ckeditor import CKEditorField
 
-##WTForm
+
 class CreateCafeForm(FlaskForm):
-
-
     name = StringField('Cafe name', validators=[DataRequired()])
     map_url = StringField('Map URL', validators=[DataRequired(), URL()])
     img_url = StringField('Cafe Image URL', validators=[DataRequired(), URL()])
@@ -27,7 +25,7 @@ class LoginForm(FlaskForm):
 
 
 class RegisterForm(FlaskForm):
-    email = StringField('Email', validators=[DataRequired()])
+    email = StringField('Email', validators=[Email()])
     name = StringField('Name', validators=[DataRequired()])
     password = PasswordField('Password')
     submit = SubmitField('Sign me up!')
@@ -36,8 +34,3 @@ class RegisterForm(FlaskForm):
 class CommentForm(FlaskForm):
     text = CKEditorField('Your Review', validators=[DataRequired()])
     submit = SubmitField('Submit Comment')
-
-
-class AssessmentForm(FlaskForm):
-    assessment = SelectField(choices=['⭐', '⭐⭐', '⭐⭐⭐', '⭐⭐⭐⭐', '⭐⭐⭐⭐⭐'])
-

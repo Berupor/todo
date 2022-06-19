@@ -3,13 +3,13 @@
 
 
 <!-- Page Header -->
-<header class="masthead" style="background-image: url('{{cafe.img_url}}')">
+<header class="masthead" style="background-image: url('{{ cafe.img_url }}')">
   <div class="overlay"></div>
   <div class="container">
     <div class="row">
-      <div class="col-lg-8 col-md-10 mx-auto">
+      <div class="col-lg-8 col-md-12  mx-auto">
         <div class="post-heading">
-          <h1>{{cafe.name}}</h1>
+          <h1>{{ cafe.name }}</h1>
           <span class="meta">Added by
             <a href="#">{{cafe.author.name}}</a>
           </span>
@@ -22,111 +22,108 @@
 <body>
   <div class="container cafe-info">
     <div class="row align-items-start">
-      <div class="col col-left">
+      <div class="col col-left col-top">
 
-        {% if cafe.has_sockets %}
-        <p class="text-success">Sockets: Yes <i class="fa-solid fa-plug"></i></p>
+        {% if cafe.has_sockets: %}
+        <p class="text-success">Sockets: Yes <i class="fa-solid fa-plug info-i"></i></p>
         {% else: %}
-        <p class="text-danger">Sockets: No <i class="fa-solid fa-plug-circle-xmark"></i></p>
+        <p class="text-danger">Sockets: No <i class="fa-solid fa-plug-circle-xmark info-i"></i></p>
         {% endif %}
       </div>
-      <div class="col col-average">
+      <div class="col col-average col-top">
 
-        {% if cafe.has_toilet %}
-        <p class="text-success">Toilet: Yes <i class="fa-solid fa-toilet-paper"></i></p>
+        {% if cafe.has_toilet: %}
+        <p class="text-success">Toilet: Yes <i class="fa-solid fa-toilet-paper info-i"></i></p>
         {% else: %}
-        <p class="text-danger">Toilet: No <i class="fa-solid fa-toilet-paper-slash"></i></p>
+        <p class="text-danger">Toilet: No <i class="fa-solid fa-toilet-paper-slash info-i"></i></p>
         {% endif %}
       </div>
-      <div class="col col-average">
+      <div class="col col-average col-top">
 
-        {% if cafe.has_wifi %}
-        <p class="text-success">Wifi: Yes <i class="fa-solid fa-wifi"></i></p>
+        {% if cafe.has_wifi: %}
+        <p class="text-success">Wifi: Yes <i class="fa-solid fa-wifi info-i"></i></p>
         {% else: %}
-        <p class="text-danger">Wifi: No <i class="fa-solid fa-ban"></i></p>
+        <p class="text-danger">Wifi: No <i class="fa-solid fa-ban info-i"></i></p>
         {% endif %}
       </div>
-      <div class="col col-right">
+      <div class="col col-right col-top">
 
-        {% if cafe.can_take_calls %}
-        <p class="text-success">Calls: Yes <i class="fa-solid fa-phone"></i></p>
+        {% if cafe.can_take_calls: %}
+        <p class="text-success">Calls: Yes <i class="fa-solid fa-phone info-i"></i></p>
         {% else: %}
-        <p class="text-danger">Calls: No <i class="fa-solid fa-phone-slash"></i></p>
+        <p class="text-danger">Calls: No <i class="fa-solid fa-phone-slash info-i"></i></p>
         {% endif %}
       </div>
     </div>
+
     <div class="row align-items-center">
-      <div class="col col-left ">
-        Seats: <i>{{ cafe.seats }}</i>
+      <div class="col col-left col-seats">
+        Seats: <i class="info-i">{{ cafe.seats }}</i>
       </div>
-      <div class="col col-average main-info">
-        <h5>Assessment: ⭐ {{ assessment }}</h5>
+      <div class="col col-md-8 col-average col-rating">
+        <h5>Average Rating: ⭐ {{ assessment }}</h5>
+        <hr>
+        Your Rating: ⭐ {{ user_rating.assessment }}
       </div>
-      <div class="col col-right">
-        Price: <i>{{ cafe.coffee_price }}</i>
+
+      <div class="col col-right col-coffee">
+        Coffee Price: <i class="info-i">{{ cafe.coffee_price }}</i>
       </div>
     </div>
+
     <div class="row align-items-end">
-      <div class="col col-left">
-        <a class="map-link" href={{ cafe.map_url }}> Google maps <i class="fa-solid fa-location-dot"></i></a>
-      </div>
-      <div class="col col-right">
-         Empty
+      <div class="col col-left col-map">
+        <a class="map-link" href={{ cafe.map_url }}> Google maps <i class="fa-solid fa-location-dot info-i"></i></a>
       </div>
 
+      <div class="col col-right col-assessment">
+        <form method='post' action="" onsubmit="">
+          <fieldset>
+            <span class="star-cb-group">
+              <input type="submit" id="rating-5" name="rating" value="5" /><label for="rating-5">5</label>
+              <input type="submit" id="rating-4" name="rating" value="4" /><label for="rating-4">4</label>
+              <input type="submit" id="rating-3" name="rating" value="3" /><label for="rating-3">3</label>
+              <input type="submit" id="rating-2" name="rating" value="2" /><label for="rating-2">2</label>
+              <input type="submit" id="rating-1" name="rating" value="1" /><label for="rating-1">1</label>
+              <input type="submit" id="rating-0" name="rating" value="0" class="star-cb-clear" /><label for="rating-0">0</label>
+            </span>
+          </fieldset>
+        </form>
+      </div>
     </div>
   </div>
-
   <hr>
-
-<article>
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-8 col-md-10 mx-auto">
-
-
-
-        {% if logged_in %}
-        <!--           Comments Area -->
-        {#				#Load the CKEditor#}
-        {{ ckeditor.load() }}
-        {#          #Configure it with the name of the form field from CommentForm#}
-        {{ ckeditor.config(name='assessment_text') }}
-        {#          #Create the wtf quickform from CommentForm#}
-        {{ wtf.quick_form(comment_form, novalidate=True, button_map={"submit": "primary"}) }}
-					  {% endif %}
-
-        <div class="col-lg-12 col-md-10 mx-auto comment">
-          {% for review in reviews %}
-          <ul class="commentList">
-            <li>
-              <div class="commenterImage">
-                <img src="{{ review.review_author.email | gravatar }}" />
-              </div>
-              <div class="commentText">
-                {{ review.text|safe }}
-                <span class="date sub-text">{{ review.review_author.name }}</span>
-
-
-              </div>
-            </li>
-          </ul>
-          {% endfor %}
-
+  <article>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          {% if logged_in %}
+          <!--           Comments Area -->
+          {#				#Load the CKEditor#}
+          {{ ckeditor.load() }}
+          {#          #Configure it with the name of the form field from CommentForm#}
+          {{ ckeditor.config(name='assessment_text') }}
+          {#          #Create the wtf quickform from CommentForm#}
+          {{ wtf.quick_form(comment_form, novalidate=True, button_map={"submit": "primary"}) }}
+          {% endif %}
+          <div class="col-lg-12 col-md-10 mx-auto comment">
+            {% for review in reviews %}
+            <ul class="commentList">
+              <li>
+                <div class="commenterImage">
+                  <img src="{{ review.review_author.email | gravatar }}" alt="img">
+                </div>
+                <div class="commentText">
+                  {{ review.text|safe }}
+                  <span class="date sub-text">{{ review.review_author.name }}</span>
+                </div>
+              </li>
+            </ul>
+            {% endfor %}
+          </div>
         </div>
-
-
       </div>
     </div>
-  </div>
-</article>
-
-<hr>
-
-
-
+  </article>
+  <hr>
 </body>
-
-
-
-<!-- Post Content -->
