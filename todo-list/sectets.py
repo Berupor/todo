@@ -1,0 +1,4 @@
+# dbhost =
+# dbuser =
+# dbpass =
+# dbname =
